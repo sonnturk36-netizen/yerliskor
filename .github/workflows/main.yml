@@ -3,7 +3,7 @@ name: Flutter APK ve AAB Derleme
 on:
   push:
     branches:
-      - main # Kodlarınızı 'main' dalına yüklediğinizde otomatik çalışır
+      - main
 
 jobs:
   build:
@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Kodları Çek
         uses: actions/checkout@v4
+
+      - name: ZIP Dosyasını Dışarı Çıkar
+        run: |
+          unzip project-bolt-sb1-tfphnph4.zip -d proje_klasor_adi
+          ls -la proje_klasor_adi # İçeriği kontrol etmek için
 
       - name: Java Kur
         uses: actions/setup-java@v3
@@ -31,17 +36,20 @@ jobs:
 
       - name: Bağımlılıkları Yükle
         run: flutter pub get
+        working-directory: proje_klasor_adi
 
       - name: Google Play İçin AAB Üret
         run: flutter build appbundle --release
+        working-directory: proje_klasor_adi
 
       - name: Test İçin APK Üret
         run: flutter build apk --release
+        working-directory: proje_klasor_adi
 
       - name: Dosyaları Teslim Et (Artifacts)
         uses: actions/upload-artifact@v4
         with:
           name: google-play-dosyalari
           path: |
-            build/app/outputs/bundle/release/app-release.aab
-            build/app/outputs/flutter-apk/app-release.apk
+            proje_klasor_adi/build/app/outputs/bundle/release/app-release.aab
+            proje_klasor_adi/build/app/outputs/flutter-apk/app-release.apk
