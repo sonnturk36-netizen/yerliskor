@@ -1,4 +1,4 @@
-amlname: Flutter APK Build From ZIP
+name: Flutter APK Build From ZIP
 
 on:
   push:
@@ -38,4 +38,3 @@ jobs:
         with:
           name: app-debug
           path: project/build/app/outputs/flutter-apk/app-debug.apk
-
